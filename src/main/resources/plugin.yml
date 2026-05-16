@@ -1,0 +1,7 @@
+name: CRFramework
+version: '1.0.1'
+main: io.zlero.cRFramework.CRFrameworkPlugin
+api-version: '1.20'
+description: Paper plugin framework (Kotlin DI, GUI, DB, NMS)
+authors:
+  - zlero
