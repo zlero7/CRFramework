@@ -1,0 +1,91 @@
+plugins {
+    kotlin("jvm") version "2.3.10"
+    id("com.gradleup.shadow") version "8.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
+    `maven-publish`
+}
+
+group = "io.zlero"
+version = "1.0.1"
+
+repositories {
+    mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/") {
+        name = "papermc-repo"
+    }
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
+
+    implementation("org.jetbrains.exposed:exposed-core:0.44.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.44.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.44.1")
+
+    implementation("org.xerial:sqlite-jdbc:3.43.0.0")
+    implementation("com.mysql:mysql-connector-j:8.1.0")
+    implementation("com.h2database:h2:2.2.224")
+
+    implementation("com.zaxxer:HikariCP:5.1.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+}
+
+val targetJavaVersion = 17
+kotlin {
+    jvmToolchain(targetJavaVersion)
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.20.4")
+    }
+
+    shadowJar {
+        archiveBaseName.set("CRFramework")
+        archiveClassifier.set("")
+        archiveVersion.set(version.toString())
+
+        relocate("org.jetbrains.exposed",  "io.zlero.cRFramework.libs.exposed")
+        relocate("org.xerial.sqlite",      "io.zlero.cRFramework.libs.sqlite")
+        relocate("com.zaxxer.hikari",      "io.zlero.cRFramework.libs.hikari")
+        relocate("kotlinx.coroutines",     "io.zlero.cRFramework.libs.coroutines")
+
+        dependencies {
+            exclude(dependency("org.jetbrains:annotations"))
+        }
+
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+
+    jar {
+        enabled = false
+    }
+
+    processResources {
+        val props = mapOf("version" to version)
+        inputs.properties(props)
+        filteringCharset = "UTF-8"
+        filesMatching("plugin.yml") {
+            expand(props)
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId    = "io.zlero"
+            artifactId = "CRFramework"
+            version    = project.version.toString()
+            artifact(tasks.shadowJar)
+        }
+    }
+}
