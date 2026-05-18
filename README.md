@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.zlero7:CRFramework:1.0.1")
+    compileOnly("com.github.zlero7:CRFramework:1.0.2")
 }
 ```
 
@@ -664,7 +664,7 @@ class MyPlugin : CRPlugin() {
 ./gradlew shadowJar
 ```
 
-결과물: `build/libs/CRFramework-1.0.1.jar`
+결과물: `build/libs/CRFramework-1.0.2.jar`
 
 > `jar` 태스크가 아닌 **반드시 `shadowJar`** 를 사용해야 합니다.  
 > Exposed · HikariCP · sqlite-jdbc · kotlinx-coroutines 가 함께 번들링됩니다.

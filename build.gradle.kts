@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.zlero"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -49,10 +49,10 @@ tasks {
         archiveClassifier.set("")
         archiveVersion.set(version.toString())
 
-        relocate("org.jetbrains.exposed",  "io.zlero.cRFramework.libs.exposed")
-        relocate("org.xerial.sqlite",      "io.zlero.cRFramework.libs.sqlite")
-        relocate("com.zaxxer.hikari",      "io.zlero.cRFramework.libs.hikari")
-        relocate("kotlinx.coroutines",     "io.zlero.cRFramework.libs.coroutines")
+        // 드라이버류만 relocate (다른 플러그인과 충돌 방지)
+        // Exposed / kotlinx-coroutines 는 공개 API에 노출되므로 원본 경로 유지
+        relocate("org.xerial.sqlite", "io.zlero.cRFramework.libs.sqlite")
+        relocate("com.zaxxer.hikari", "io.zlero.cRFramework.libs.hikari")
 
         dependencies {
             exclude(dependency("org.jetbrains:annotations"))
