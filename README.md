@@ -33,6 +33,25 @@ CRFramework를 **사용하는 플러그인**은 아래와 같이 의존성을 �
 depend: [CRFramework]
 ```
 
+### 방법 1) JitPack (권장)
+
+```kotlin
+// build.gradle.kts
+repositories {
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    compileOnly("com.github.zlero7:CRFramework:1.0.1")
+}
+```
+
+[![](https://jitpack.io/v/zlero7/CRFramework.svg)](https://jitpack.io/#zlero7/CRFramework)
+
+특정 커밋이나 `main-SNAPSHOT` 도 사용 가능합니다.
+
+### 방법 2) 로컬 JAR
+
 ```kotlin
 // build.gradle.kts
 dependencies {
