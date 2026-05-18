@@ -671,4 +671,4 @@ class MyPlugin : CRPlugin() {
 
 ## 라이선스
 
-All rights reserved © zlero
+MIT License © 2026 zlero — 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
