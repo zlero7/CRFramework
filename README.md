@@ -7,9 +7,9 @@ DI 컨테이너, 반응형 GUI, DB ORM, 스케줄러, NMS 추상화를 제공합
 
 | 항목 | 버전 |
 |------|------|
-| Minecraft | 1.20.4 ~ 1.21.4 |
+| Minecraft | 1.20.4 ~ 1.21.7 |
 | Paper API | 1.20.4-R0.1-SNAPSHOT |
-| Java | 17 |
+| Java | 21 |
 | Kotlin | 2.3.10 |
 
 ## 기능
