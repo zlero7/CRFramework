@@ -103,9 +103,15 @@ abstract class View(
         p.closeInventory()
     }
 
-    internal fun handleClick(slot: Int) {
-        val p = viewer ?: return
-        buttons.findLast { it.slot == slot }?.clickHandler?.invoke(p)
+    internal fun handleClick(slot: Int, isRightClick: Boolean = false) {
+        val p   = viewer ?: return
+        val btn = buttons.findLast { it.slot == slot } ?: return
+        if (isRightClick) {
+            // onRightClick이 정의돼 있으면 전용 핸들러, 없으면 onClick 폴백
+            (btn.rightClickHandler ?: btn.clickHandler)(p)
+        } else {
+            btn.clickHandler(p)
+        }
     }
 
     internal fun handleClose() {

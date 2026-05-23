@@ -19,7 +19,9 @@ class ViewListener : Listener {
         val view   = ViewRegistry.get(player) ?: return
         e.isCancelled = true
         if (e.rawSlot < 0 || e.rawSlot >= e.view.topInventory.size) return
-        view.handleClick(e.rawSlot)
+        val isRight = e.click == org.bukkit.event.inventory.ClickType.RIGHT ||
+                      e.click == org.bukkit.event.inventory.ClickType.SHIFT_RIGHT
+        view.handleClick(e.rawSlot, isRight)
     }
 
     @EventHandler

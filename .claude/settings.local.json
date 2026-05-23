@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(javap -version 2>&1)",
+      "PowerShell(java -version 2>&1)",
+      "Bash(Remove-Item \"D:\\\\MC플러그인\\\\CRFramework\\\\src\\\\main\\\\kotlin\\\\io\\\\zlero\\\\cRFramework\\\\CRFrameworkMain.kt\")"
+    ]
+  }
+}

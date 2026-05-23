@@ -9,10 +9,11 @@ import org.bukkit.inventory.ItemStack
  * GUI 슬롯 하나를 표현하는 요소
  */
 data class ButtonElement(
-    val slot         : Int,
-    val itemProvider : (Player) -> ItemStack,
-    val clickHandler : (Player) -> Unit,
-    val state        : State<*>?
+    val slot              : Int,
+    val itemProvider      : (Player) -> ItemStack,
+    val clickHandler      : (Player) -> Unit,
+    val rightClickHandler : ((Player) -> Unit)?,   // null = 우클릭 별도 정의 없음
+    val state             : State<*>?
 )
 
 /**
@@ -55,13 +56,18 @@ class CreateScope {
  * 버튼 DSL 빌더
  */
 class ButtonBuilder(private val slot: Int, private val state: State<*>?) {
-    private var itemProvider: (Player) -> ItemStack = { ItemStack(Material.AIR) }
-    private var clickHandler: (Player) -> Unit      = {}
+    private var itemProvider      : (Player) -> ItemStack  = { ItemStack(Material.AIR) }
+    private var clickHandler      : (Player) -> Unit       = {}
+    private var rightClickHandler : ((Player) -> Unit)?    = null
 
     fun item(provider: (Player) -> ItemStack) { itemProvider = provider }
     fun item(stack: ItemStack)                { itemProvider = { stack } }
     fun item(material: Material)              { itemProvider = { ItemStack(material) } }
-    fun onClick(handler: (Player) -> Unit)    { clickHandler = handler }
 
-    fun build() = ButtonElement(slot, itemProvider, clickHandler, state)
+    /** 좌클릭 핸들러. onRightClick 미정의 시 우클릭에도 적용됨 */
+    fun onClick(handler: (Player) -> Unit)      { clickHandler = handler }
+    /** 우클릭 전용 핸들러 (정의 시 onClick과 독립적으로 동작) */
+    fun onRightClick(handler: (Player) -> Unit) { rightClickHandler = handler }
+
+    fun build() = ButtonElement(slot, itemProvider, clickHandler, rightClickHandler, state)
 }
