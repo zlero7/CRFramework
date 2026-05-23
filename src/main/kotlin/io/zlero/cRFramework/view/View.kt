@@ -105,7 +105,7 @@ abstract class View(
 
     internal fun handleClick(slot: Int) {
         val p = viewer ?: return
-        buttons.find { it.slot == slot }?.clickHandler?.invoke(p)
+        buttons.findLast { it.slot == slot }?.clickHandler?.invoke(p)
     }
 
     internal fun handleClose() {
