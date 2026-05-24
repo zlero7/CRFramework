@@ -5,7 +5,6 @@ import io.zlero.cRFramework.core.component.registry.CRComponentRegistry
 import io.zlero.cRFramework.listener.handler.ListenerAnnotationHandler
 import io.zlero.cRFramework.nms.NMSServiceManager
 import io.zlero.cRFramework.scheduler.CRScheduler
-import io.zlero.cRFramework.view.listener.ViewListener
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 
@@ -54,9 +53,6 @@ abstract class CRPlugin : JavaPlugin() {
         registry        = CRComponentRegistry(this)
         commandHandler  = CommandAnnotationHandler(this)
         listenerHandler = ListenerAnnotationHandler(this)
-
-        // 3. View 글로벌 리스너 등록
-        server.pluginManager.registerEvents(ViewListener(), this)
 
         // 4. 플러그인 자신을 빈으로 등록
         registry.registerAny(this::class, this)

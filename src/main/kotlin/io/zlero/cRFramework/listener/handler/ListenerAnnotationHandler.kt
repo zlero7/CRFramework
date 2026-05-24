@@ -29,8 +29,10 @@ class ListenerAnnotationHandler(private val plugin: JavaPlugin) {
                 { _, event ->
                     if (eventClass.isInstance(event))
                         runCatching { method.invoke(instance, event) }
-                            .onFailure {
-                                plugin.logger.warning("[CRFramework] 리스너 오류 [${method.name}]: ${it.message}")
+                            .onFailure { ex ->
+                                val cause = (ex as? java.lang.reflect.InvocationTargetException)?.cause ?: ex
+                                plugin.logger.warning("[CRFramework] 리스너 오류 [${method.name}]: ${cause.message}")
+                                cause.stackTrace.take(8).forEach { plugin.logger.warning("  at $it") }
                             }
                 },
                 plugin,
