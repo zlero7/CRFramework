@@ -7,6 +7,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class ViewListener : Listener {
 
-    /** uuid → (slot → lastClickMs) */
+    /** uuid → lastClickMs */
     private val lastClick = ConcurrentHashMap<UUID, Long>()
 
     @EventHandler
@@ -29,9 +30,7 @@ class ViewListener : Listener {
         val view   = ViewRegistry.get(player) ?: return
         e.isCancelled = true
         if (e.rawSlot < 0 || e.rawSlot >= e.view.topInventory.size) return
-        // 더블클릭 이벤트는 무시 (빠른 클릭 시 LEFT+LEFT+DOUBLE_CLICK 3회 발생 방지)
         if (e.click == ClickType.DOUBLE_CLICK) return
-        // 100ms 디바운스: 같은 플레이어의 연속 이벤트 중복 방지
         val now  = System.currentTimeMillis()
         val last = lastClick[player.uniqueId] ?: 0L
         if (now - last < 100L) return
@@ -46,5 +45,10 @@ class ViewListener : Listener {
         val player = e.player as? Player ?: return
         lastClick.remove(player.uniqueId)
         ViewRegistry.get(player)?.handleClose()
+    }
+
+    @EventHandler
+    fun onQuit(e: PlayerQuitEvent) {
+        lastClick.remove(e.player.uniqueId)
     }
 }
